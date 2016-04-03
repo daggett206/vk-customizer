@@ -1,5 +1,23 @@
 ;(function(){
 
+    var model = {
+        customNames:  ["Выберите схему:","Dracula", "Ariel", "Pinky"],
+        user_data: {
+            bgColor: function(){
+                return localStorage.getItem('bgColor')
+            },
+            colorScheme: function(){
+                return localStorage.getItem('colorScheme');
+            }
+        },
+        features : function(){
+            return [
+                view.openPopup,
+                view.chooseScheme
+            ];
+        }
+    };
+
     var html = htmlNode,
         doc = document,
         body = doc.body,
@@ -17,7 +35,7 @@
             elem.textContent = "Цветовая схема"
         }),
         colorSelect = addElement("select", "lightColorSelect", function(elem){
-            var optionNames = ["Выберите схему:","Dracula", "Ariel", "Pinki"];
+            var optionNames = model.customNames;
             var options = function(){
                 var arr = [];
                 for (var i=0;i<optionNames.length;i++){
@@ -35,23 +53,6 @@
                 elem.appendChild(item);
             });
         });
-
-    var model = {
-        user_data: {
-            bgColor: function(){
-                return localStorage.getItem('bgColor')
-            },
-            colorScheme: function(){
-                return localStorage.getItem('colorScheme');
-            }
-        },
-        features : function(){
-            return [
-                controller.openPopup
-            ];
-        }
-    };
-
 
     var controller = {
         injectElements: function(){
@@ -91,6 +92,33 @@
                     },false);
                 })();
             }
+        },
+        chooseScheme: function(select){
+            select.addEventListener('change',function(){
+                switch (select.value){
+                    case model.customNames[1]:
+                        html.removeAttribute('class');
+                        html.className += select.value.toLowerCase();
+                        break;
+                    case model.customNames[2]:
+                        html.removeAttribute('class');
+                        html.className += select.value.toLowerCase();
+                        break;
+                    case model.customNames[3]:
+                        html.removeAttribute('class');
+                        html.className += select.value.toLowerCase();
+                        break;
+                    default:
+                        console.log('controller.chooseScheme has crashed');
+                }
+                localStorage.setItem('colorScheme', select.value);
+            },false);
+            select.value = model.user_data.colorScheme().toLowerCase() || model.customNames[0];
+        },
+        start: function(){
+            if (localStorage.getItem('colorScheme') !== '') {
+                html.className += localStorage.getItem('colorScheme').toLowerCase();
+            }
         }
     };
 
@@ -104,9 +132,13 @@
                 ]
             );
         },
+        chooseScheme: function(){
+            controller.chooseScheme(colorSelect);
+        },
         init: function(){
             controller.injectElements();
             controller.chooseFeatures();
+            controller.start();
         },
         render: function(){
             view.init();
