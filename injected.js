@@ -1,37 +1,39 @@
-(function(){
+;(function(){
 
-    var customBox = addElement("div", "customBox"),
-        customTrigger = addElement("div", "customTrigger"),
-        customColorInput = addElement("input", "customColorInput", function(el){
-            el.setAttribute('type','color');
+    var html = htmlNode,
+        doc = document,
+        body = doc.body,
+        topVkMenu = doc.querySelector('#top_support_link');
+    var lightTrigger = addElement('a', 'lightTrigger top_profile_mrow', function(elem){
+            elem.textContent = "Кастомизация";
+            elem.setAttribute("accesskey", "p");
         }),
-        customHeading = addElement("h3", "customHeading"),
-        customColorSelect = addElement("div", "customColorContainer", function(el){
-            var label = addElement("label","customColorLabel", function(el){
-                el.setAttribute("for", "customColorSelect");
-                el.textContent = "Цветовая схема";
+        lightClose = addElement('a', 'lightClose'),
+        lightContainer = addElement('div','lightContainer'),
+        lightPopup = addElement('div','lightPopup');
+    var colorBlock = addElement('div', 'lightColorContainer'),
+        colorLabel = addElement('label', 'lightColorLabel', function(elem){
+            elem.setAttribute("for", "lightColorSelect");
+            elem.textContent = "Цветовая схема"
+        }),
+        colorSelect = addElement("select", "lightColorSelect", function(elem){
+            var optionNames = ["Выберите схему:","Dracula", "Ariel", "Pinki"];
+            var options = function(){
+                var arr = [];
+                for (var i=0;i<optionNames.length;i++){
+                    arr.push(addElement("option", "lightColorOption"));
+                }
+                return arr;
+            };
+            elem.setAttribute("id", "customColorSelect");
+            options().forEach(function(item, index){
+                if(index == 0){
+                    item.setAttribute("disabled", "disabled");
+                    item.setAttribute("selected", "true");
+                }
+                item.textContent = optionNames[index];
+                elem.appendChild(item);
             });
-            var select = addElement("select", "customColorSelect", function(el){
-                var optionNames = ["Выберите схему:","Premium black", "Pinky"];
-                var options = function(){
-                    var arr = [];
-                    for (var i=0;i<optionNames.length;i++){
-                        arr.push(addElement("option", "customColorOption"));
-                    }
-                    return arr;
-                };
-                el.setAttribute("id", "customColorSelect");
-                options().forEach(function(item, index){
-                    if(index == 0){
-                        item.setAttribute("disabled", "disabled");
-                        item.setAttribute("selected", "true");
-                    }
-                    item.textContent = optionNames[index];
-                    el.appendChild(item);
-                });
-            });
-            el.appendChild(label);
-            el.appendChild(select);
         });
 
     var model = {
@@ -45,78 +47,87 @@
         },
         features : function(){
             return [
-                controller.openBox,
-                controller.chooseScheme
+                controller.openPopup
             ];
         }
     };
 
+
     var controller = {
-        openBox: function(){
-            customTrigger.addEventListener('click',function(ev){
-                if (!customBox.classList.contains("active")) {
-                    customBox.className += " active";
-                } else {
-                    customBox.className = customBox.className.replace(/\bactive\b/,'');
-                }
-            },false);
-        },
-        chooseColor: function(){
-            customColorInput.addEventListener('change',function(){
-                var currenColor = customColorInput.value,
-                    body = document.body;
-                localStorage.setItem('bgColor', currenColor);
-                body.style.backgroundColor = model.user_data.bgColor();
-            })
-        },
-        chooseScheme: function(){
-            customColorSelect.addEventListener('change',function(){
-                localStorage.setItem('colorScheme', customColorSelect.value);
-                console.log(customColorSelect.value);
-            },false);
+        injectElements: function(){
+            insertAfter(lightTrigger, topVkMenu);
+            appending(lightPopup, lightClose);
+            appending(lightContainer, lightPopup);
+            appending(colorBlock, colorLabel);
+            appending(colorBlock, colorSelect);
+            appending(lightPopup, colorBlock);
+            appending(body, lightContainer);
         },
         chooseFeatures: function(){
             model.features().forEach(function(el){
                 el && el();
             });
         },
-        render: function(){
-            view.render();
+        openPopup: function(container, arr){
+            function openPopup(){
+                if (!container.classList.contains("active")) {
+                    container.className += " active";
+                } else {
+                    container.className = container.className.replace(/\bactive\b/,'');
+                }
+            }
+            document.onkeydown = function(evt) {
+                evt = evt || window.event;
+                if (evt.keyCode == 27) {
+                    container.className = container.className.replace(/\bactive\b/,'');
+                }
+            };
+            for(var i=0;i<arr.length;i++){
+                (function(){
+                    arr[i].addEventListener('click',function(e){
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openPopup();
+                    },false);
+                })();
+            }
         }
     };
 
     var view = {
+        openPopup: function(){
+            controller.openPopup(
+                lightContainer,
+                [
+                    lightTrigger,
+                    lightClose
+                ]
+            );
+        },
         init: function(){
-            function addToCustomBox(arr) {
-                arr.forEach(function(elem){
-                    customBox.appendChild(elem);
-                });
-            }
-            addToCustomBox([
-                customTrigger,
-                customColorSelect
-            ]);
+            controller.injectElements();
             controller.chooseFeatures();
-            return customBox;
         },
         render: function(){
-            var body = document.body,
-                finishBox = view.init();
-            body.style.background = localStorage.getItem('bgColor');
-            body.appendChild(finishBox);
+            view.init();
         }
     };
 
+    view.render();
+
+    function insertAfter(elem, refElem) {
+        return refElem.parentNode.insertBefore(elem, refElem.nextSibling);
+    }
+    function appending(container, element){
+        container.appendChild(element);
+    }
     function addElement(tag, className, callback){
-        var elem = document.createElement(tag);
+        var elem = document.createElement(tag),
+            props = {};
         elem.setAttribute("class", className);
         if (callback){
-            callback(elem);
+            callback(elem, props);
         }
         return elem;
     }
-
-    controller.render();
-
-
 })();
