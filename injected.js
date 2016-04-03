@@ -4,6 +4,10 @@
         customTrigger = addElement("div", "customTrigger"),
         customColorInput = addElement("input", "customColorInput", function(el){
             el.setAttribute('type','color');
+        }),
+        customHeading = addElement("h3", "customHeading"),
+        customColorSet = addElement("input", "customColorSet", function(el){
+            el.setAttribute('type','color');
         });
 
     var model = {
@@ -32,6 +36,11 @@
                 body.style.backgroundColor = model.user_data.bgColor();
             })
         },
+        chooseFeatures: function(arr){
+            arr.forEach(function(el){
+                el && el();
+            });
+        },
         render: function(){
             view.render();
         }
@@ -39,23 +48,20 @@
 
     var view = {
         init: function(){
-            customBox.appendChild(customTrigger);
-            customBox.appendChild(customColorInput);
-            if (controller.openBox()){
-                controller.openBox();
+            var features = [controller.openBox, controller.chooseColor];
+            function addToCustomBox(elem) {
+                customBox.appendChild(elem);
             }
-            if (controller.chooseColor()){
-                controller.chooseColor();
-            }
+            addToCustomBox(customTrigger);
+            addToCustomBox(customColorInput);
+            controller.chooseFeatures(features);
             return customBox;
         },
         render: function(){
             var body = document.body,
-                finishBox = function(){
-                return view.init();
-            };
-            body.style.background = localStorage.getItem('bgColor') ;
-            body.appendChild(finishBox());
+                finishBox = view.init();
+            body.style.background = localStorage.getItem('bgColor');
+            body.appendChild(finishBox);
         }
     };
 
