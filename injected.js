@@ -113,7 +113,7 @@
                 }
                 localStorage.setItem('colorScheme', select.value);
             },false);
-            select.value = model.user_data.colorScheme().toLowerCase() || model.customNames[0];
+            select.value = model.user_data.colorScheme() || model.customNames[0];
         },
         start: function(){
             if (localStorage.getItem('colorScheme') !== '') {
