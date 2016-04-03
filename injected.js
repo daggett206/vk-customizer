@@ -6,15 +6,48 @@
             el.setAttribute('type','color');
         }),
         customHeading = addElement("h3", "customHeading"),
-        customColorSet = addElement("input", "customColorSet", function(el){
-            el.setAttribute('type','color');
+        customColorSelect = addElement("div", "customColorContainer", function(el){
+            var label = addElement("label","customColorLabel", function(el){
+                el.setAttribute("for", "customColorSelect");
+                el.textContent = "Цветовая схема";
+            });
+            var select = addElement("select", "customColorSelect", function(el){
+                var optionNames = ["Выберите схему:","Premium black", "Pinky"];
+                var options = function(){
+                    var arr = [];
+                    for (var i=0;i<optionNames.length;i++){
+                        arr.push(addElement("option", "customColorOption"));
+                    }
+                    return arr;
+                };
+                el.setAttribute("id", "customColorSelect");
+                options().forEach(function(item, index){
+                    if(index == 0){
+                        item.setAttribute("disabled", "disabled");
+                        item.setAttribute("selected", "true");
+                    }
+                    item.textContent = optionNames[index];
+                    el.appendChild(item);
+                });
+            });
+            el.appendChild(label);
+            el.appendChild(select);
         });
 
     var model = {
         user_data: {
             bgColor: function(){
                 return localStorage.getItem('bgColor')
+            },
+            colorScheme: function(){
+                return localStorage.getItem('colorScheme');
             }
+        },
+        features : function(){
+            return [
+                controller.openBox,
+                controller.chooseScheme
+            ];
         }
     };
 
@@ -36,8 +69,14 @@
                 body.style.backgroundColor = model.user_data.bgColor();
             })
         },
-        chooseFeatures: function(arr){
-            arr.forEach(function(el){
+        chooseScheme: function(){
+            customColorSelect.addEventListener('change',function(){
+                localStorage.setItem('colorScheme', customColorSelect.value);
+                console.log(customColorSelect.value);
+            },false);
+        },
+        chooseFeatures: function(){
+            model.features().forEach(function(el){
                 el && el();
             });
         },
@@ -48,13 +87,16 @@
 
     var view = {
         init: function(){
-            var features = [controller.openBox, controller.chooseColor];
-            function addToCustomBox(elem) {
-                customBox.appendChild(elem);
+            function addToCustomBox(arr) {
+                arr.forEach(function(elem){
+                    customBox.appendChild(elem);
+                });
             }
-            addToCustomBox(customTrigger);
-            addToCustomBox(customColorInput);
-            controller.chooseFeatures(features);
+            addToCustomBox([
+                customTrigger,
+                customColorSelect
+            ]);
+            controller.chooseFeatures();
             return customBox;
         },
         render: function(){
