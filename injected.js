@@ -32,7 +32,6 @@
         lightHeading = addElement('h3', 'lightHeading', function(elem){
             elem.textContent = "Кастомизация";
         });
-
     var colorBlock = addElement('div', 'lightColorContainer'),
         colorLabel = addElement('label', 'lightColorLabel', function(elem){
             elem.setAttribute("for", "lightColorSelect");
