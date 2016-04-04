@@ -24,11 +24,15 @@
         topVkMenu = doc.querySelector('#top_support_link');
     var lightTrigger = addElement('a', 'lightTrigger top_profile_mrow', function(elem){
             elem.textContent = "Кастомизация";
-            elem.setAttribute("accesskey", "p");
+            elem.setAttribute("accesskey", "q");
         }),
         lightClose = addElement('a', 'lightClose'),
         lightContainer = addElement('div','lightContainer'),
-        lightPopup = addElement('div','lightPopup');
+        lightPopup = addElement('div','lightPopup'),
+        lightHeading = addElement('h3', 'lightHeading', function(elem){
+            elem.textContent = "Кастомизация";
+        });
+
     var colorBlock = addElement('div', 'lightColorContainer'),
         colorLabel = addElement('label', 'lightColorLabel', function(elem){
             elem.setAttribute("for", "lightColorSelect");
@@ -58,6 +62,7 @@
         injectElements: function(){
             insertAfter(lightTrigger, topVkMenu);
             appending(lightPopup, lightClose);
+            appending(lightPopup, lightHeading);
             appending(lightContainer, lightPopup);
             appending(colorBlock, colorLabel);
             appending(colorBlock, colorSelect);
@@ -119,6 +124,7 @@
             if (localStorage.getItem('colorScheme') !== '') {
                 html.className += localStorage.getItem('colorScheme').toLowerCase();
             }
+
         }
     };
 
@@ -162,4 +168,5 @@
         }
         return elem;
     }
+
 })();
