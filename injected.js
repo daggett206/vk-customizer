@@ -59,95 +59,56 @@
             });
         });
 
-    var block = document.createElement('div');
-
     var virtualDOM = {
-        root: block,
-        content: [
-            {
-                block: lightContainer,
-                content: [
-                    {
-                        block: lightPopup,
-                        content: [
-                            {
-                                block: colorBlock,
-                                content: [
-                                    {
-                                        block: colorLabel
-                                    },
-                                    {
-                                        block: colorSelect
-                                    }
-                                ]
-                            },
-                            {
-                                block: lightHeading
-                            },
-                            {
-                                block: lightClose
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+        root: {
+            block: lightContainer,
+            content: [
+                {
+                    block: lightPopup,
+                    content: [
+                        {
+                            block: colorBlock,
+                            content: [
+                                {
+                                    block: colorLabel
+                                },
+                                {
+                                    block: colorSelect
+                                }
+                            ]
+                        },
+                        {
+                            block: lightHeading
+                        },
+                        {
+                            block: lightClose
+                        }
+                    ]
+                }
+            ]
+        }
     };
 
     function render(tree){
         var queue = [tree.root];
         while(queue.length) {
             var node = queue.shift();
-            for(var i = 0; i < node.content.length; i++) {
-                queue.push(node.content[i].block);
-                node.append(node.content[i].block);
-            }
-        }
-    }
-
-    function createDOM(DOM){
-        var elements = [];
-        function parseDOM(DOM) {
-            for(var key in DOM){
-                if (!(DOM[key] instanceof HTMLElement)){
-                    if (Array.isArray(DOM[key])){
-                        for(var prop in DOM){
-                            if (!(DOM[prop] instanceof HTMLBodyElement)) {
-                                elements.push(DOM[prop]);
-                            }
-                        }
-                    }
-                    parseDOM(DOM[key]);
+            if (node.content){
+                for(var i = 0; i < node.content.length; i++) {
+                    queue.push(node.content[i]);
+                    node.block.appendChild(node.content[i].block);
                 }
             }
         }
-        parseDOM(DOM);
-        var ctrl = elements.reverse().reduce(function(prev,current){
-            if (Array.isArray(prev)){
-                prev.map(function(el){
-                    appending(current,el.block)
-                });
-            }
-        });
-        console.log(ctrl);
+        return lightContainer;
     }
 
-    createDOM(virtualDOM);
+
 
     var controller = {
         injectElements: function(){
             insertAfter(lightTrigger, topVkMenu);
-
-            /*appending(lightPopup, lightClose);
-            appending(lightPopup, lightHeading);
-
-            appending(colorBlock, colorLabel);
-            appending(colorBlock, colorSelect);
-
-            appending(lightPopup, colorBlock);
-
-            appending(lightContainer, lightPopup);
-            appending(body, lightContainer);*/
+            render(virtualDOM);
         },
         chooseFeatures: function(){
             model.features().forEach(function(el){
