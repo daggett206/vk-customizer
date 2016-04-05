@@ -1,4 +1,5 @@
 ;(function(){
+
     /**
      * MODEL
      * */
@@ -31,31 +32,31 @@
     /**
      * ORIGIN POPUP VARIABLES
      * */
-    var lightTrigger = addElement('a', 'lightTrigger top_profile_mrow', function(elem){
+    var lightTrigger = new AddElement('a', 'lightTrigger top_profile_mrow', function(elem){
             elem.textContent = "Кастомизация";
             elem.setAttribute("accesskey", "q");
         }),
-        lightClose = addElement('a', 'lightClose'),
-        lightContainer = addElement('div','lightContainer'),
-        lightPopup = addElement('div','lightPopup'),
-        lightHeading = addElement('h3', 'lightHeading', function(elem){
+        lightClose = new AddElement('a', 'lightClose'),
+        lightContainer = new AddElement('div','lightContainer'),
+        lightPopup = new AddElement('div','lightPopup'),
+        lightHeading = new AddElement('h3', 'lightHeading', function(elem){
             elem.textContent = "Кастомизация";
-        });
+        }),
+        lightBlock = new AddElement('div', 'lightBlock');
 
     /**
      * COLOR SCHEME BLOCK
      * */
-    var colorBlock = addElement('div', 'lightColorContainer'),
-        colorLabel = addElement('label', 'lightColorLabel', function(elem){
+    var colorLabel = new AddElement('label', 'lightColorLabel', function(elem){
             elem.setAttribute("for", "lightColorSelect");
             elem.textContent = "Цветовая схема"
         }),
-        colorSelect = addElement("select", "lightColorSelect", function(elem){
+        colorSelect = new AddElement("select", "lightColorSelect", function(elem){
             var optionNames = model.customNames;
             var options = function(){
                 var arr = [];
                 for (var i=0;i<optionNames.length;i++){
-                    arr.push(addElement("option", "lightColorOption"));
+                    arr.push(new AddElement("option", "lightColorOption"));
                 }
                 return arr;
             };
@@ -71,6 +72,11 @@
         });
 
     /**
+     * REMOVE ADS BLOCK
+     * */
+
+
+    /**
      * VIRTUAL DOM
      * */
     var virtualDOM = {
@@ -84,7 +90,7 @@
                             block: lightHeading
                         },
                         {
-                            block: colorBlock,
+                            block: lightBlock,
                             content: [
                                 {
                                     block: colorLabel
@@ -96,13 +102,15 @@
                         },
                         {
                             block: lightClose
+                        },
+                        {
+                            block: lightBlock
                         }
                     ]
                 }
             ]
         }
     };
-
 
     /**
      * CONTROLLER
@@ -117,9 +125,9 @@
                 var node = queue.shift();
                 if (node.content){
                     for(var i = 0; i < node.content.length; i++) {
-                        console.log(i,node.block, node.content[i]);
                         queue.push(node.content[i]);
-                        appending(node.block, node.content[i].block)
+                        appending(node.block, node.content[i].block);
+                        console.log(i,node.block, node.content[i], queue[i].block);
                     }
                 }
             }
@@ -222,14 +230,13 @@
     function appending(container, element){
         container.appendChild(element);
     }
-    function addElement(tag, className, callback){
-        var elem = document.createElement(tag),
-            props = {};
-        elem.setAttribute("class", className);
+    function AddElement(tag, className, callback){
+        this.elem = document.createElement(tag);
+        this.elem.setAttribute("class", className);
         if (callback){
-            callback(elem, props);
+            callback(this.elem);
         }
-        return elem;
+        return this.elem;
     }
 
 
