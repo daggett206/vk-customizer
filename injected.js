@@ -63,27 +63,27 @@
         root: body,
         content: [
             {
-                block: [lightContainer],
+                block: lightContainer,
                 content: [
                     {
-                        block: [lightPopup],
+                        block: lightPopup,
                         content: [
                             {
-                                block: [colorBlock],
+                                block: colorBlock,
                                 content: [
                                     {
-                                        block:[colorLabel]
+                                        block: colorLabel
                                     },
                                     {
-                                        block :[colorSelect]
+                                        block: colorSelect
                                     }
                                 ]
                             },
                             {
-                                block: [lightHeading]
+                                block: lightHeading
                             },
                             {
-                                block: [lightClose]
+                                block: lightClose
                             }
                         ]
                     }
@@ -93,16 +93,20 @@
     };
 
     function parseDOM(DOM) {
+        var child = [];
         for(var key in DOM){
             if (!(DOM[key] instanceof HTMLElement)){
+
                 if (Array.isArray(DOM[key])){
-                    DOM[key].reduce(function(prev,el){
-                        if (prev !== el && el instanceof HTMLElement) {
-                            console.log(DOM[key]);
+                    DOM[key].forEach(function(el){
+                        if (el.content == undefined){
+                            child.push(el.block);
+                            console.log(child);
                         }
-                    }, DOM[key]);
+                    });
                 }
                 parseDOM(DOM[key]);
+
             }
         }
     }
