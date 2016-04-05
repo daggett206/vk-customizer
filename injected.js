@@ -59,8 +59,10 @@
             });
         });
 
+    var block = document.createElement('div');
+
     var virtualDOM = {
-        root: body,
+        root: block,
         content: [
             {
                 block: lightContainer,
@@ -92,22 +94,42 @@
         ]
     };
 
+    function render(tree){
+        var queue = [tree.root];
+        while(queue.length) {
+            var node = queue.shift();
+            for(var i = 0; i < node.content.length; i++) {
+                queue.push(node.content[i].block);
+                node.append(node.content[i].block);
+            }
+        }
+    }
+
     function createDOM(DOM){
-        var elements= [];
+        var elements = [];
         function parseDOM(DOM) {
             for(var key in DOM){
                 if (!(DOM[key] instanceof HTMLElement)){
                     if (Array.isArray(DOM[key])){
-                        DOM[key].forEach(function(el){
-                            elements.push(el.block);
-                        });
+                        for(var prop in DOM){
+                            if (!(DOM[prop] instanceof HTMLBodyElement)) {
+                                elements.push(DOM[prop]);
+                            }
+                        }
                     }
                     parseDOM(DOM[key]);
                 }
             }
         }
         parseDOM(DOM);
-        console.log(elements);
+        var ctrl = elements.reverse().reduce(function(prev,current){
+            if (Array.isArray(prev)){
+                prev.map(function(el){
+                    appending(current,el.block)
+                });
+            }
+        });
+        console.log(ctrl);
     }
 
     createDOM(virtualDOM);
