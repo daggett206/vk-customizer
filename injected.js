@@ -18,10 +18,11 @@
         }
     };
 
-    var html = htmlNode,
-        doc = document,
+    var doc = document,
+        html = doc.documentElement,
         body = doc.body,
         topVkMenu = doc.querySelector('#top_support_link');
+
     var lightTrigger = addElement('a', 'lightTrigger top_profile_mrow', function(elem){
             elem.textContent = "Кастомизация";
             elem.setAttribute("accesskey", "q");
@@ -32,6 +33,7 @@
         lightHeading = addElement('h3', 'lightHeading', function(elem){
             elem.textContent = "Кастомизация";
         });
+
     var colorBlock = addElement('div', 'lightColorContainer'),
         colorLabel = addElement('label', 'lightColorLabel', function(elem){
             elem.setAttribute("for", "lightColorSelect");
@@ -57,15 +59,69 @@
             });
         });
 
+    var virtualDOM = {
+        root: body,
+        content: [
+            {
+                block: [lightContainer],
+                content: [
+                    {
+                        block: [lightPopup],
+                        content: [
+                            {
+                                block: [colorBlock],
+                                content: [
+                                    {
+                                        block:[colorLabel]
+                                    },
+                                    {
+                                        block :[colorSelect]
+                                    }
+                                ]
+                            },
+                            {
+                                block: [lightHeading]
+                            },
+                            {
+                                block: [lightClose]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+
+    function parseDOM(DOM) {
+        for(var key in DOM){
+            if (!(DOM[key] instanceof HTMLElement)){
+                if (Array.isArray(DOM[key])){
+                    DOM[key].reduce(function(prev,el){
+                        if (prev !== el && el instanceof HTMLElement) {
+                            console.log(DOM[key]);
+                        }
+                    }, DOM[key]);
+                }
+                parseDOM(DOM[key]);
+            }
+        }
+    }
+
+    parseDOM(virtualDOM);
+
     var controller = {
         injectElements: function(){
             insertAfter(lightTrigger, topVkMenu);
+
             appending(lightPopup, lightClose);
             appending(lightPopup, lightHeading);
-            appending(lightContainer, lightPopup);
+
             appending(colorBlock, colorLabel);
             appending(colorBlock, colorSelect);
+
             appending(lightPopup, colorBlock);
+
+            appending(lightContainer, lightPopup);
             appending(body, lightContainer);
         },
         chooseFeatures: function(){
@@ -78,13 +134,13 @@
                 if (!container.classList.contains("active")) {
                     container.className += " active";
                 } else {
-                    container.className = container.className.replace(/\bactive\b/,'');
+                    container.className = container.className.replace(/\b active\b/,'');
                 }
             }
             document.onkeydown = function(evt) {
                 evt = evt || window.event;
                 if (evt.keyCode == 27) {
-                    container.className = container.className.replace(/\bactive\b/,'');
+                    container.className = container.className.replace(/\b active\b/,'');
                 }
             };
             for(var i=0;i<arr.length;i++){
