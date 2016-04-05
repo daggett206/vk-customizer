@@ -1,5 +1,7 @@
 ;(function(){
-
+    /**
+     * MODEL
+     * */
     var model = {
         customNames:  ["Выберите схему:","Dracula", "Ariel", "Pinky"],
         user_data: {
@@ -18,11 +20,17 @@
         }
     };
 
+    /**
+     * ORIGIN VARIABLES
+     * */
     var doc = document,
         html = doc.documentElement,
         body = doc.body,
         topVkMenu = doc.querySelector('#top_support_link');
 
+    /**
+     * ORIGIN POPUP VARIABLES
+     * */
     var lightTrigger = addElement('a', 'lightTrigger top_profile_mrow', function(elem){
             elem.textContent = "Кастомизация";
             elem.setAttribute("accesskey", "q");
@@ -34,6 +42,9 @@
             elem.textContent = "Кастомизация";
         });
 
+    /**
+     * COLOR SCHEME BLOCK
+     * */
     var colorBlock = addElement('div', 'lightColorContainer'),
         colorLabel = addElement('label', 'lightColorLabel', function(elem){
             elem.setAttribute("for", "lightColorSelect");
@@ -59,6 +70,9 @@
             });
         });
 
+    /**
+     * VIRTUAL DOM
+     * */
     var virtualDOM = {
         root: {
             block: lightContainer,
@@ -66,6 +80,9 @@
                 {
                     block: lightPopup,
                     content: [
+                        {
+                            block: lightHeading
+                        },
                         {
                             block: colorBlock,
                             content: [
@@ -78,9 +95,6 @@
                             ]
                         },
                         {
-                            block: lightHeading
-                        },
-                        {
                             block: lightClose
                         }
                     ]
@@ -89,26 +103,27 @@
         }
     };
 
-    function render(tree){
-        var queue = [tree.root];
-        while(queue.length) {
-            var node = queue.shift();
-            if (node.content){
-                for(var i = 0; i < node.content.length; i++) {
-                    queue.push(node.content[i]);
-                    node.block.appendChild(node.content[i].block);
-                }
-            }
-        }
-        return lightContainer;
-    }
 
-
-
+    /**
+     * CONTROLLER
+     * */
     var controller = {
         injectElements: function(){
             insertAfter(lightTrigger, topVkMenu);
-            render(virtualDOM);
+        },
+        initVirtualDom: function(tree){
+            var queue = [tree.root];
+            while(queue.length) {
+                var node = queue.shift();
+                if (node.content){
+                    for(var i = 0; i < node.content.length; i++) {
+                        console.log(i,node.block, node.content[i]);
+                        queue.push(node.content[i]);
+                        appending(node.block, node.content[i].block)
+                    }
+                }
+            }
+            appending(body, tree.root.block);
         },
         chooseFeatures: function(){
             model.features().forEach(function(el){
@@ -169,6 +184,9 @@
         }
     };
 
+    /**
+     * VIEW
+     * */
     var view = {
         openPopup: function(){
             controller.openPopup(
@@ -184,6 +202,7 @@
         },
         init: function(){
             controller.injectElements();
+            controller.initVirtualDom(virtualDOM);
             controller.chooseFeatures();
             controller.start();
         },
@@ -194,6 +213,9 @@
 
     view.render();
 
+    /**
+     * SUPPORT FUNCTIONS
+     * */
     function insertAfter(elem, refElem) {
         return refElem.parentNode.insertBefore(elem, refElem.nextSibling);
     }
