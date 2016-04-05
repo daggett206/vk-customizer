@@ -92,32 +92,31 @@
         ]
     };
 
-    function parseDOM(DOM) {
-        var child = [];
-        for(var key in DOM){
-            if (!(DOM[key] instanceof HTMLElement)){
-
-                if (Array.isArray(DOM[key])){
-                    DOM[key].forEach(function(el){
-                        if (el.content == undefined){
-                            child.push(el.block);
-                            console.log(child);
-                        }
-                    });
+    function createDOM(DOM){
+        var elements= [];
+        function parseDOM(DOM) {
+            for(var key in DOM){
+                if (!(DOM[key] instanceof HTMLElement)){
+                    if (Array.isArray(DOM[key])){
+                        DOM[key].forEach(function(el){
+                            elements.push(el.block);
+                        });
+                    }
+                    parseDOM(DOM[key]);
                 }
-                parseDOM(DOM[key]);
-
             }
         }
+        parseDOM(DOM);
+        console.log(elements);
     }
 
-    parseDOM(virtualDOM);
+    createDOM(virtualDOM);
 
     var controller = {
         injectElements: function(){
             insertAfter(lightTrigger, topVkMenu);
 
-            appending(lightPopup, lightClose);
+            /*appending(lightPopup, lightClose);
             appending(lightPopup, lightHeading);
 
             appending(colorBlock, colorLabel);
@@ -126,7 +125,7 @@
             appending(lightPopup, colorBlock);
 
             appending(lightContainer, lightPopup);
-            appending(body, lightContainer);
+            appending(body, lightContainer);*/
         },
         chooseFeatures: function(){
             model.features().forEach(function(el){
@@ -227,5 +226,7 @@
         }
         return elem;
     }
+
+
 
 })();
