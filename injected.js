@@ -11,12 +11,16 @@
             },
             colorScheme: function(){
                 return localStorage.getItem('colorScheme');
+            },
+            ads: function(){
+                return localStorage.getItem('ads');
             }
         },
         features : function(){
             return [
                 view.openPopup,
-                view.chooseScheme
+                view.chooseScheme,
+                view.removeAds
             ];
         }
     };
@@ -27,7 +31,8 @@
     var doc = document,
         html = doc.documentElement,
         body = doc.body,
-        topVkMenu = doc.querySelector('#top_support_link');
+        topVkMenu = doc.querySelector('#top_support_link'),
+        vkAds = doc.querySelector('#ads_left');
 
     /**
      * VARIABLES FOR EXTENDS
@@ -192,11 +197,25 @@
             },false);
             select.value = model.user_data.colorScheme() || model.customNames[0];
         },
+        removeAds: function(){
+            function showOrHide(string){
+                vkAds.style.display = string;
+                localStorage.setItem('ads', string);
+            }
+            adsCheckbox.addEventListener('change',function(){
+                adsCheckbox.checked ? showOrHide('none') : showOrHide('block');
+            });
+            adsCheckbox.checked ? vkAds.style.display = 'none' : vkAds.style.display = 'block'
+        },
         start: function(){
             if (localStorage.getItem('colorScheme') !== '') {
                 html.className += 'custom ' + localStorage.getItem('colorScheme').toLowerCase();
             }
-
+            if (localStorage.getItem('ads') !== '' && localStorage.getItem('ads') !== 'block'){
+                console.log('none');
+                vkAds.style.display = 'none !important';
+                console.log(vkAds);
+            }
         }
     };
 
@@ -215,6 +234,9 @@
         },
         chooseScheme: function(){
             controller.chooseScheme(colorSelect);
+        },
+        removeAds: function(){
+            controller.removeAds();
         },
         init: function(){
             controller.injectElements();
