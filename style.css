@@ -1,4 +1,4 @@
-.lightContainer {
+.customContainer {
     position: fixed;
     background: rgba(0,0,0,0.8);
     width: 100%;
@@ -12,10 +12,10 @@
     justify-content: center;
     align-items: center;
 }
-.lightContainer.active {
+.customContainer.active {
     display: flex;
 }
-.lightPopup {
+.customPopup {
     position: relative;
     width: 350px;
     height: 450px;
@@ -34,7 +34,7 @@
         transform: translateY(0em);
     }
 }
-.lightClose {
+.customClose {
     background: url(/images/icons/cross.png) no-repeat;
     width: 12px;
     height: 12px;
@@ -44,7 +44,7 @@
     right: 20px;
     z-index: 1;
 }
-.lightHeading {
+.customHeading {
     position: relative;
     padding: 0 0 0 25px;
     margin: 0;
@@ -57,15 +57,32 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.lightBlock {
-    padding: 10px;
+.customBlock {
+    position: relative;
+    padding: 10px 10px 5px 10px;
 }
-.lightPopup label {
+.customLabel {
     display: block;
     font-size: 1.2em;
     color: #597da3;
 }
-.lightPopup select {
+.customCheckBox:checked + .customLabel:after {
+    position: absolute;
+    content: ' ';
+    width: 22px;
+    height: 22px;
+    background: url(/images/icons/check_uncheck.png) no-repeat 0 0px;
+}
+.customAdsLabel:after {
+    position: absolute;
+    content: ' ';
+    width: 22px;
+    height: 22px;
+    top: 8px;
+    right: 12px;
+    background: url(/images/icons/check_uncheck.png) no-repeat 0 -26px;
+}
+.customPopup select {
     font-family: Open Sans,Helvetica Neue,sans-serif;
     max-width: 100%;
     width: 100%;
@@ -73,15 +90,24 @@
     border-radius: 3px;
     padding: 5px;
     font-size: 1.1em;
-    margin: 10px 0 15px;
+    margin: 10px 0 0;
     -webkit-appearance: none;
     background: url(/images/icons/profile_arrow.png) no-repeat;
     background-size: 10px;
     background-position: 97%;
     outline: none;
 }
-.lightPopup option {
+.customPopup option {
     color: #4a6f97;
+}
+.customCheckBox {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    z-index: 1;
 }
 /*SCHEME COMMON*/
 .custom #side_bar_inner ol {
@@ -103,6 +129,7 @@
     left: -8px;
     border-radius: 5px;
 }
+
 /*DRACULA*/
 :root.dracula{
     --header-bg-color: #5A5A5A;
@@ -152,4 +179,10 @@
 }
 .custom .top_notify_count {
     border: 2px solid var(--bg-color);
+}
+.custom .top_nav_btn:hover .top_notify_count{
+    border-color: var(--header-bg-color);
+}
+.top_audio_player .top_audio_player_btn>div {
+    opacity: 1;
 }

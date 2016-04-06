@@ -4,7 +4,7 @@
      * MODEL
      * */
     var model = {
-        customNames:  ["Выберите схему:","Dracula", "Ariel", "Pinky"],
+        customNames:  ["Выберите схему:","Dracula", "Ariel", "Pinky", "Dafault"],
         user_data: {
             bgColor: function(){
                 return localStorage.getItem('bgColor')
@@ -30,33 +30,41 @@
         topVkMenu = doc.querySelector('#top_support_link');
 
     /**
+     * VARIABLES FOR EXTENDS
+     * */
+    var extendLabel = new AddElement('label','customLabel'),
+        extendBlock = new AddElement('div', 'customBlock'),
+        extendCheckbox = new AddElement('input', 'customCheckBox', function(elem){
+            elem.setAttribute('type', 'checkbox');
+        });
+
+    /**
      * ORIGIN POPUP VARIABLES
      * */
-    var lightTrigger = new AddElement('a', 'lightTrigger top_profile_mrow', function(elem){
+    var customTrigger = new AddElement('a', 'customTrigger top_profile_mrow', function(elem){
             elem.textContent = "Кастомизация";
             elem.setAttribute("accesskey", "q");
         }),
-        lightClose = new AddElement('a', 'lightClose'),
-        lightContainer = new AddElement('div','lightContainer'),
-        lightPopup = new AddElement('div','lightPopup'),
-        lightHeading = new AddElement('h3', 'lightHeading', function(elem){
+        customClose = new AddElement('a', 'customClose'),
+        customContainer = new AddElement('div','customContainer'),
+        customPopup = new AddElement('div','customPopup'),
+        customHeading = new AddElement('h3', 'customHeading', function(elem){
             elem.textContent = "Кастомизация";
-        }),
-        lightBlock = new AddElement('div', 'lightBlock');
+        });
 
     /**
      * COLOR SCHEME BLOCK
      * */
-    var colorLabel = new AddElement('label', 'lightColorLabel', function(elem){
-            elem.setAttribute("for", "lightColorSelect");
-            elem.textContent = "Цветовая схема"
+    var colorBlock = cloneElement(extendBlock, 'customColorBlock'),
+        colorLabel = cloneElement(extendLabel, 'customColorLabel', 'Цветовая схема',function(elem){
+            elem.setAttribute('for', 'customColorSelect');
         }),
-        colorSelect = new AddElement("select", "lightColorSelect", function(elem){
+        colorSelect = new AddElement("select", "customColorSelect", function(elem){
             var optionNames = model.customNames;
             var options = function(){
                 var arr = [];
                 for (var i=0;i<optionNames.length;i++){
-                    arr.push(new AddElement("option", "lightColorOption"));
+                    arr.push(new AddElement("option", "customColorOption"));
                 }
                 return arr;
             };
@@ -74,23 +82,30 @@
     /**
      * REMOVE ADS BLOCK
      * */
-
+    var adsBlock = cloneElement(extendBlock, 'customAdsBlock'),
+        adsLabel = cloneElement(extendLabel, 'customAdsLabel', 'Скрыть рекламу',function(elem){
+            elem.setAttribute('for', 'customAdsCheckbox');
+        }),
+        adsCheckbox = cloneElement(extendCheckbox, 'customAdsCheckbox');
 
     /**
      * VIRTUAL DOM
      * */
     var virtualDOM = {
         root: {
-            block: lightContainer,
+            block: customContainer,
             content: [
                 {
-                    block: lightPopup,
+                    block: customPopup,
                     content: [
                         {
-                            block: lightHeading
+                            block: customClose
                         },
                         {
-                            block: lightBlock,
+                            block: customHeading
+                        },
+                        {
+                            block: colorBlock,
                             content: [
                                 {
                                     block: colorLabel
@@ -101,10 +116,15 @@
                             ]
                         },
                         {
-                            block: lightClose
-                        },
-                        {
-                            block: lightBlock
+                            block: adsBlock,
+                            content: [
+                                {
+                                    block: adsCheckbox
+                                },
+                                {
+                                    block: adsLabel
+                                }
+                            ]
                         }
                     ]
                 }
@@ -117,7 +137,7 @@
      * */
     var controller = {
         injectElements: function(){
-            insertAfter(lightTrigger, topVkMenu);
+            insertAfter(customTrigger, topVkMenu);
         },
         initVirtualDom: function(tree){
             var queue = [tree.root];
@@ -164,21 +184,9 @@
         },
         chooseScheme: function(select){
             select.addEventListener('change',function(){
-                switch (select.value){
-                    case model.customNames[1]:
-                        html.removeAttribute('class');
-                        html.className += 'custom ' + select.value.toLowerCase();
-                        break;
-                    case model.customNames[2]:
-                        html.removeAttribute('class');
-                        html.className += 'custom ' + select.value.toLowerCase();
-                        break;
-                    case model.customNames[3]:
-                        html.removeAttribute('class');
-                        html.className += 'custom ' + select.value.toLowerCase();
-                        break;
-                    default:
-                        console.log('controller.chooseScheme has crashed');
+                if (model.customNames.indexOf(select.value) != -1){
+                    html.removeAttribute('class');
+                    html.className += 'custom ' + select.value.toLowerCase();
                 }
                 localStorage.setItem('colorScheme', select.value);
             },false);
@@ -198,10 +206,10 @@
     var view = {
         openPopup: function(){
             controller.openPopup(
-                lightContainer,
+                customContainer,
                 [
-                    lightTrigger,
-                    lightClose
+                    customTrigger,
+                    customClose
                 ]
             );
         },
@@ -238,7 +246,16 @@
         }
         return this.elem;
     }
-
-
+    function cloneElement(reference, className, text, callback){
+        var elem = reference.cloneNode();
+        className = className || '';
+        elem.className += ' ' + className;
+        text = text || null;
+        if (text) {
+            elem.textContent = text;
+        }
+        callback && callback(elem);
+        return elem;
+    }
 
 })();
