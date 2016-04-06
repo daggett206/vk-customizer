@@ -167,15 +167,15 @@
                 switch (select.value){
                     case model.customNames[1]:
                         html.removeAttribute('class');
-                        html.className += select.value.toLowerCase();
+                        html.className += 'custom ' + select.value.toLowerCase();
                         break;
                     case model.customNames[2]:
                         html.removeAttribute('class');
-                        html.className += select.value.toLowerCase();
+                        html.className += 'custom ' + select.value.toLowerCase();
                         break;
                     case model.customNames[3]:
                         html.removeAttribute('class');
-                        html.className += select.value.toLowerCase();
+                        html.className += 'custom ' + select.value.toLowerCase();
                         break;
                     default:
                         console.log('controller.chooseScheme has crashed');
@@ -186,7 +186,7 @@
         },
         start: function(){
             if (localStorage.getItem('colorScheme') !== '') {
-                html.className += localStorage.getItem('colorScheme').toLowerCase();
+                html.className += 'custom ' + localStorage.getItem('colorScheme').toLowerCase();
             }
 
         }

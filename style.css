@@ -84,16 +84,16 @@
     color: #4a6f97;
 }
 /*SCHEME COMMON*/
-.dracula #side_bar_inner ol {
+.custom #side_bar_inner ol {
     padding: 10px 0;
 }
-.dracula #side_bar_inner ol,
-.dracula #side_bar_inner li {
+.custom #side_bar_inner ol,
+.custom #side_bar_inner li {
     position: relative;
     background: white;
     border-radius: 5px;
 }
-.dracula #side_bar_inner ol:before {
+.custom #side_bar_inner ol:before {
     position: absolute;
     content: ' ';
     background: white;
@@ -104,43 +104,52 @@
     border-radius: 5px;
 }
 /*DRACULA*/
-.dracula body {
-    background: #2b2b2b;
+:root.dracula{
+    --main-color: #2b2b2b;
+    --header-bg-color: #5A5A5A;
+    --header-search-color: #C1BFBF;
+    --main-color-hover: #2b2b2b;
 }
-.dracula #page_header_cont .back {
+:root.ariel{
+    --main-color: #d5d5d5;
+    --header-bg-color: #388fff;
+    --header-search-color: #464444;
+    --main-color-hover: #1058ff;
+}
+.custom body {
+    background: var(--main-color);
+}
+.custom #page_header_cont .back {
     position: absolute;
     width: 100%;
-    background: #5A5A5A;
+    background: var(--header-bg-color);
     height: 46px;
-    border-bottom: 1px solid #444040;
+    border-bottom: none;
     box-sizing: border-box;
 }
-.dracula .text.ts_input {
-    background: #2B2B2B;
-    background-image: url(https://3.downloader.disk.yandex.ru/preview/97398a9fd90c07fae76318f51cb4c60af94a3aaff307ce7a782ca9d6ab827d69/inf/iyqF8bszrgO6TJSFN2VBs6jWlRIm-KRVaiqfdsoZGSOM1A2Tx89RXalkMFrsDT9V3ISq5FpA3QvKIpsV88okpw%3D%3D?uid=272934188&filename=zoom--white.png);
-    background-repeat: no-repeat;
-    background-position-y: 8px;
+.custom .text.ts_input {
+    background: var(--main-color);
 }
-.dracula .ts_wrap .input_back_content {
-    color: #C1BFBF;
+.ccustom.ts_wrap .input_back_content {
+    color: var(--header-search-color);
 }
-.dracula .top_nav_btn.active,
-.dracula .top_nav_btn:hover,
-.dracula .top_audio_player.audio_top_btn_active,
-.dracula .top_audio_player:hover,
-.dracula .audio_play,
-.dracula .top_nav_link:hover,
-.dracula .top_nav_link.active{
-    background-color: #2B2B2B;
+.custom .top_nav_btn.active,
+.custom .top_nav_btn:hover,
+.custom .top_audio_player.audio_top_btn_active,
+.custom .top_audio_player:hover,
+.custom .audio_play,
+.custom .top_nav_link:hover,
+.custom .top_nav_link.active{
+    background-color: var(--main-color-hover);
 }
-.dracula .top_nav_btn#top_notify_btn .top_nav_btn_icon,
-.dracula .top_nav_btn#top_notify_btn:hover .top_nav_btn_icon{
+.custom .top_nav_btn#top_notify_btn .top_nav_btn_icon,
+.custom .top_nav_btn#top_notify_btn:hover .top_nav_btn_icon{
     background-position: -65px -23px;
 }
-.dracula .top_nav_btn#top_audio .top_nav_btn_icon,
-.dracula .top_nav_btn#top_audio:hover .top_nav_btn_icon {
+.custom .top_nav_btn#top_audio .top_nav_btn_icon,
+.custom .top_nav_btn#top_audio:hover .top_nav_btn_icon {
     background-position: -65px -52px;
 }
-.dracula .top_notify_count {
-    border: 2px solid #2B2B2B;
+.custom .top_notify_count {
+    border: 2px solid var(--main-color);
 }
