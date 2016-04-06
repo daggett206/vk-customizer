@@ -1,3 +1,6 @@
+.customHide {
+    display: none !important;
+}
 .customContainer {
     position: fixed;
     background: rgba(0,0,0,0.8);

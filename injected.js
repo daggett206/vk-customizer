@@ -208,12 +208,12 @@
             adsCheckbox.checked ? vkAds.style.display = 'none' : vkAds.style.display = 'block'
         },
         start: function(){
-            if (localStorage.getItem('colorScheme') !== '') {
+            if (model.user_data.colorScheme() !== '') {
                 html.className += 'custom ' + localStorage.getItem('colorScheme').toLowerCase();
             }
-            if (localStorage.getItem('ads') !== '' && localStorage.getItem('ads') !== 'block'){
+            if (model.user_data.ads() && model.user_data.ads() != 'block'){
                 console.log('none');
-                vkAds.style.display = 'none !important';
+                vkAds.className += "customHide";
                 console.log(vkAds);
             }
         }
