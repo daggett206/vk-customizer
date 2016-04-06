@@ -105,19 +105,19 @@
 }
 /*DRACULA*/
 :root.dracula{
-    --main-color: #2b2b2b;
     --header-bg-color: #5A5A5A;
-    --header-search-color: #C1BFBF;
-    --main-color-hover: #2b2b2b;
+    --secondary-color: #2b2b2b;
+    --secondary-text-color: #b8b6b6;
+    --bg-color: #2b2b2b;
 }
 :root.ariel{
-    --main-color: #d5d5d5;
-    --header-bg-color: #388fff;
-    --header-search-color: #464444;
-    --main-color-hover: #1058ff;
+    --header-bg-color: #039BE5;
+    --secondary-color: #0288D1;
+    --secondary-text-color: #ffffff;
+    --bg-color: #d5d5d5;
 }
 .custom body {
-    background: var(--main-color);
+    background: var(--bg-color);
 }
 .custom #page_header_cont .back {
     position: absolute;
@@ -128,10 +128,10 @@
     box-sizing: border-box;
 }
 .custom .text.ts_input {
-    background: var(--main-color);
+    background: var(--secondary-color);
 }
-.ccustom.ts_wrap .input_back_content {
-    color: var(--header-search-color);
+.custom .ts_wrap .input_back_content {
+    color: var(--secondary-text-color);
 }
 .custom .top_nav_btn.active,
 .custom .top_nav_btn:hover,
@@ -140,7 +140,7 @@
 .custom .audio_play,
 .custom .top_nav_link:hover,
 .custom .top_nav_link.active{
-    background-color: var(--main-color-hover);
+    background-color: var(--secondary-color);
 }
 .custom .top_nav_btn#top_notify_btn .top_nav_btn_icon,
 .custom .top_nav_btn#top_notify_btn:hover .top_nav_btn_icon{
@@ -151,5 +151,5 @@
     background-position: -65px -52px;
 }
 .custom .top_notify_count {
-    border: 2px solid var(--main-color);
+    border: 2px solid var(--bg-color);
 }
