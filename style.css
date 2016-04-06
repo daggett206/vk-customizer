@@ -110,8 +110,37 @@
 .dracula #page_header_cont .back {
     position: absolute;
     width: 100%;
-    background: #0c0c0c;
+    background: #5A5A5A;
     height: 46px;
     border-bottom: 1px solid #444040;
     box-sizing: border-box;
+}
+.dracula .text.ts_input {
+    background: #2B2B2B;
+    background-image: url(https://3.downloader.disk.yandex.ru/preview/97398a9fd90c07fae76318f51cb4c60af94a3aaff307ce7a782ca9d6ab827d69/inf/iyqF8bszrgO6TJSFN2VBs6jWlRIm-KRVaiqfdsoZGSOM1A2Tx89RXalkMFrsDT9V3ISq5FpA3QvKIpsV88okpw%3D%3D?uid=272934188&filename=zoom--white.png);
+    background-repeat: no-repeat;
+    background-position-y: 8px;
+}
+.dracula .ts_wrap .input_back_content {
+    color: #C1BFBF;
+}
+.dracula .top_nav_btn.active,
+.dracula .top_nav_btn:hover,
+.dracula .top_audio_player.audio_top_btn_active,
+.dracula .top_audio_player:hover,
+.dracula .audio_play,
+.dracula .top_nav_link:hover,
+.dracula .top_nav_link.active{
+    background-color: #2B2B2B;
+}
+.dracula .top_nav_btn#top_notify_btn .top_nav_btn_icon,
+.dracula .top_nav_btn#top_notify_btn:hover .top_nav_btn_icon{
+    background-position: -65px -23px;
+}
+.dracula .top_nav_btn#top_audio .top_nav_btn_icon,
+.dracula .top_nav_btn#top_audio:hover .top_nav_btn_icon {
+    background-position: -65px -52px;
+}
+.dracula .top_notify_count {
+    border: 2px solid #2B2B2B;
 }

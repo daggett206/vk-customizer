@@ -127,7 +127,7 @@
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
                         appending(node.block, node.content[i].block);
-                        console.log(i,node.block, node.content[i], queue[i].block);
+                        //console.log(i,node.block, node.content[i], queue[i].block);
                     }
                 }
             }
