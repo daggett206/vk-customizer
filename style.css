@@ -59,21 +59,15 @@
 }
 .customBlock {
     position: relative;
-    padding: 10px 10px 5px 10px;
+    padding: 10px 10px;
+    border-bottom: 1px solid rgba(128,128,128,0.25);
 }
 .customLabel {
     display: block;
     font-size: 1.2em;
     color: #597da3;
 }
-.customCheckBox:checked + .customLabel:after {
-    position: absolute;
-    content: ' ';
-    width: 22px;
-    height: 22px;
-    background: url(/images/icons/check_uncheck.png) no-repeat 0 0px;
-}
-.customAdsLabel:after {
+.customLabel:after {
     position: absolute;
     content: ' ';
     width: 22px;
@@ -81,6 +75,10 @@
     top: 8px;
     right: 12px;
     background: url(/images/icons/check_uncheck.png) no-repeat 0 -26px;
+}
+.customColorLabel:after {
+    position: static;
+    content: initial;
 }
 .customPopup select {
     font-family: Open Sans,Helvetica Neue,sans-serif;
@@ -108,6 +106,13 @@
     height: 20px;
     opacity: 0;
     z-index: 1;
+}
+.customCheckBox:checked + .customLabel:after {
+    position: absolute;
+    content: ' ';
+    width: 22px;
+    height: 22px;
+    background: url(/images/icons/check_uncheck.png) no-repeat 0 0;
 }
 /*SCHEME COMMON*/
 .custom #side_bar_inner ol {
