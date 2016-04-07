@@ -216,15 +216,17 @@
                 vkAds.className += "customHide";
             }
 
-            var KeyCombination = function(customKey) {
+            var KeyCombination = function(charCode) {
                 var self = this;
                 self.keys = [];
                 document.addEventListener("keydown",function(e){
+
                     if (self.keys.indexOf(e.which)<0){
                         self.keys.push(e.which);
                     }
-                    if (self.keys[0] == 16 && self.keys[1] == customKey){
-                        console.log('SHIFT & ' + customKey);
+                    if (self.keys[0] == 16 && self.keys[1] == charCode){
+                        e.preventDefault();
+                        console.log('SHIFT & ' + charCode);
                     }
                 });
                 document.addEventListener("keyup",function(e){
@@ -232,6 +234,11 @@
                 });
             };
 
+            function showKeyCode(){
+                var code = prompt().charCodeAt(0);
+                alert(code-32);
+            }
+            showKeyCode();
             new KeyCombination('w');
         }
     };
