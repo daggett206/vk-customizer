@@ -206,6 +206,7 @@
                 adsCheckbox.checked ? showOrHide(true) : showOrHide(false);
             });
         },
+
         start: function(){
             if (model.user_data.colorScheme() !== '') {
                 html.className += 'custom ' + localStorage.getItem('colorScheme').toLowerCase();
@@ -214,6 +215,24 @@
                 adsCheckbox.checked = true;
                 vkAds.className += "customHide";
             }
+
+            var KeyCombination = function(customKey) {
+                var self = this;
+                self.keys = [];
+                document.addEventListener("keydown",function(e){
+                    if (self.keys.indexOf(e.which)<0){
+                        self.keys.push(e.which);
+                    }
+                    if (self.keys[0] == 16 && self.keys[1] == customKey){
+                        console.log('SHIFT & ' + customKey);
+                    }
+                });
+                document.addEventListener("keyup",function(e){
+                    self.keys.splice(self.keys.indexOf(e.which),1);
+                });
+            };
+
+            new KeyCombination('w');
         }
     };
 
