@@ -210,10 +210,9 @@
             if (model.user_data.colorScheme() !== '') {
                 html.className += 'custom ' + localStorage.getItem('colorScheme').toLowerCase();
             }
-            if (model.user_data.ads() && model.user_data.ads() != 'block'){
-                console.log('none');
+            if (model.user_data.ads()){
+                adsCheckbox.checked = true;
                 vkAds.className += "customHide";
-                console.log(vkAds);
             }
         }
     };
