@@ -13,7 +13,7 @@
                 return localStorage.getItem('colorScheme');
             },
             ads: function(){
-                return localStorage.getItem('ads');
+                return localStorage.getItem('adsOff');
             }
         },
         features : function(){
@@ -198,14 +198,13 @@
             select.value = model.user_data.colorScheme() || model.customNames[0];
         },
         removeAds: function(){
-            function showOrHide(string){
-                vkAds.style.display = string;
-                localStorage.setItem('ads', string);
+            function showOrHide(bool){
+                bool ? localStorage.setItem('adsOff','true') : localStorage.removeItem('adsOff');
+                model.user_data.ads() == 'true' ? vkAds.className += "customHide" : vkAds.removeAttribute('class');
             }
             adsCheckbox.addEventListener('change',function(){
-                adsCheckbox.checked ? showOrHide('none') : showOrHide('block');
+                adsCheckbox.checked ? showOrHide(true) : showOrHide(false);
             });
-            adsCheckbox.checked ? vkAds.style.display = 'none' : vkAds.style.display = 'block'
         },
         start: function(){
             if (model.user_data.colorScheme() !== '') {
