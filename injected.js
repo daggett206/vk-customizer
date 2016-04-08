@@ -35,25 +35,26 @@
         vkAds = doc.querySelector('#ads_left');
 
     /**
-     * VARIABLES FOR EXTENDS
+     * VARIABLES FOR EXTENDING
      * */
-    var extendLabel = new AddElement('label','customLabel'),
-        extendBlock = new AddElement('div', 'customBlock'),
-        extendCheckbox = new AddElement('input', 'customCheckBox', function(elem){
+    var extendLabel = addElement('label','customLabel'),
+        extendBlock = addElement('div', 'customBlock'),
+        extendOption = addElement("option", "customOption"),
+        extendCheckbox = addElement('input', 'customCheckBox', function(elem){
             elem.setAttribute('type', 'checkbox');
         });
 
     /**
      * ORIGIN POPUP VARIABLES
      * */
-    var customTrigger = new AddElement('a', 'customTrigger top_profile_mrow', function(elem){
+    var customTrigger = addElement('a', 'customTrigger top_profile_mrow', function(elem){
             elem.textContent = "Кастомизация";
             elem.setAttribute("accesskey", "q");
         }),
-        customClose = new AddElement('a', 'customClose'),
-        customContainer = new AddElement('div','customContainer'),
-        customPopup = new AddElement('div','customPopup'),
-        customHeading = new AddElement('h3', 'customHeading', function(elem){
+        customClose = addElement('a', 'customClose'),
+        customContainer = addElement('div','customContainer'),
+        customPopup = addElement('div','customPopup'),
+        customHeading = addElement('h3', 'customHeading', function(elem){
             elem.textContent = "Кастомизация";
         });
 
@@ -64,12 +65,12 @@
         colorLabel = cloneElement(extendLabel, 'customColorLabel', 'Цветовая схема',function(elem){
             elem.setAttribute('for', 'customColorSelect');
         }),
-        colorSelect = new AddElement("select", "customColorSelect", function(elem){
+        colorSelect = addElement("select", "customColorSelect", function(elem){
             var optionNames = model.customNames;
             var options = function(){
                 var arr = [];
-                for (var i=0;i<optionNames.length;i++){
-                    arr.push(new AddElement("option", "customColorOption"));
+                for (var i=0,j=optionNames.length;i<j;i++){
+                    arr.push(cloneElement(extendOption, "customColorOption"));
                 }
                 return arr;
             };
@@ -284,13 +285,13 @@
     function appending(container, element){
         container.appendChild(element);
     }
-    function AddElement(tag, className, callback){
-        this.elem = document.createElement(tag);
-        this.elem.setAttribute("class", className);
+    function addElement(tag, className, callback){
+        var elem = document.createElement(tag);
+        var elem.setAttribute("class", className);
         if (callback){
-            callback(this.elem);
+            callback(elem);
         }
-        return this.elem;
+        return elem;
     }
     function cloneElement(reference, className, text, callback){
         var elem = reference.cloneNode();
