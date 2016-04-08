@@ -287,7 +287,7 @@
     }
     function addElement(tag, className, callback){
         var elem = document.createElement(tag);
-        var elem.setAttribute("class", className);
+        elem.setAttribute("class", className);
         if (callback){
             callback(elem);
         }
