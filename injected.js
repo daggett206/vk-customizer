@@ -99,25 +99,56 @@
      * */
     var virtualDOM = {
         root: {
-            block: customContainer,
+            block: {
+                tag: 'div',
+                className: 'customContainer'
+            },
             content: [
                 {
-                    block: customPopup,
+                    block: {
+                        tag: 'div',
+                        className: 'customPopup'
+                    },
                     content: [
                         {
-                            block: customClose
+                            block: {
+                                tag: 'a',
+                                className: 'customClose'
+                            }
                         },
                         {
-                            block: customHeading
+                            block: {
+                                tag: 'h3',
+                                className: 'customHeading',
+                                text: 'Кастомизация'
+                            }
                         },
                         {
-                            block: colorBlock,
+                            block: {
+                                tag: 'div',
+                                className: 'customBlock customColorBlock'
+                            },
                             content: [
                                 {
-                                    block: colorLabel
+                                    block: {
+                                        tag: 'label',
+                                        className: 'customBlock customColorBlock',
+                                        text: 'Цветовая схема',
+                                        attr: [{
+                                            key: 'for',
+                                            value: 'customColorSelect'
+                                        }]
+                                    }
                                 },
                                 {
-                                    block: colorSelect
+                                    block: colorSelect,
+                                    content: [
+                                        {
+                                            block:{
+                                                repaet: dfsfsd
+                                            }
+                                        }
+                                    ]
                                 }
                             ]
                         },
