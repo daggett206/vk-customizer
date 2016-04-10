@@ -92,7 +92,7 @@
         adsLabel = cloneElement(extendLabel, 'customAdsLabel', 'Скрыть рекламу',function(elem){
             elem.setAttribute('for', 'customAdsCheckbox');
         }),
-        adsCheckbox = cloneElement(extendCheckbox, 'customAdsCheckbox');
+        adsCheckbox = cloneElement(extendCheckbox, 'customAdsCheckBox');
 
     /**
      * VIRTUAL DOM
@@ -134,18 +134,25 @@
                                         tag: 'label',
                                         className: 'customBlock customColorBlock',
                                         text: 'Цветовая схема',
-                                        attr: [{
-                                            key: 'for',
-                                            value: 'customColorSelect'
-                                        }]
+                                        attr: {
+                                            for: 'customColorSelect'
+                                        }
                                     }
                                 },
                                 {
-                                    block: colorSelect,
+                                    block: {
+                                        tag: 'select',
+                                        className: 'customSelect customColorSelect',
+                                        attr: {
+                                            id: 'customColorSelect'
+                                        }
+                                    },
                                     content: [
                                         {
                                             block:{
-                                                repaet: dfsfsd
+                                                repeat: model.customNames,
+                                                tag: 'option',
+                                                className: 'customOption customColorOption'
                                             }
                                         }
                                     ]
@@ -153,13 +160,29 @@
                             ]
                         },
                         {
-                            block: adsBlock,
+                            block: {
+                                tag: 'div',
+                                className:'customBlock adsBlock'
+                            },
                             content: [
                                 {
-                                    block: adsCheckbox
+                                    block: {
+                                        tag: 'input',
+                                        className: 'customAdsCheckBox',
+                                        attr: {
+                                            id: 'customAdsCheckBox',
+                                            type: 'checkbox'
+                                        }
+                                    }
                                 },
                                 {
-                                    block: adsLabel
+                                    block: {
+                                        tag: 'label',
+                                        className: 'customLabel customAdsLabel',
+                                        attr: {
+                                            for : 'customColorCheckBox'
+                                        }
+                                    }
                                 }
                             ]
                         }
@@ -176,6 +199,41 @@
         injectElements: function(){
             insertAfter(customTrigger, topVkMenu);
         },
+        parseDom: function(obj){
+            if (obj.block){
+                var _block = obj.block;
+                function getNode(bool) {
+                    var node = doc.createElement(_block.tag);
+                    node.className += _block.className || '';
+                    if (_block.attr){
+                        for(var key in _block.attr){
+                            node.setAttribute(key, _block.attr[key]);
+                        }
+                    }
+                    node.textContent = _block.text || null;
+                    if(bool){
+                        var _clones = [];
+                        _block.repeat.map(function(el,i){
+                            var __clone = node.cloneNode();
+                            if(i == 0){
+                                __clone.setAttribute("disabled", "disabled");
+                                __clone.setAttribute("selected", "true");
+                            }
+                            __clone.textContent = el[i] || null;
+                            _clones.push(__clone);
+                        });
+                        return _clones;
+                    }else{
+                        return node;
+                    }
+                }
+                if (_block.repeat){
+                    getNode(true);
+                } else {
+                    getNode();
+                }
+            }
+        },
         initVirtualDom: function(tree){
             var queue = [tree.root];
             while(queue.length) {
@@ -184,7 +242,7 @@
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
                         appending(node.block, node.content[i].block);
-                        //console.log(i,node.block, node.content[i], queue[i].block);
+                        console.log(i,node.block, node.content[i], queue[i].block);
                     }
                 }
             }
