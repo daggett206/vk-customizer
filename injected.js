@@ -200,7 +200,9 @@
             insertAfter(customTrigger, topVkMenu);
         },
         parseDom: function(obj){
+            console.log(obj);
             if (obj.block){
+                console.log('obj.block');
                 var _block = obj.block;
                 function getNode(bool) {
                     var node = doc.createElement(_block.tag);
@@ -241,8 +243,13 @@
                 if (node.content){
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
-                        appending(node.block, node.content[i].block);
-                        console.log(i,node.block, node.content[i], queue[i].block);
+                        var _block = controller.parseDom(node.block);
+                            //_content = controller.parseDom(node.content[i].block);
+                        console.log(_block);
+                        //console.log(_block, _content);
+                        //appending(_block, _content);
+                        //console.log(i,_block, node.content[i], queue[i].block);
+                        //console.log(i,node.block, node.content[i], queue[i].block);
                     }
                 }
             }
