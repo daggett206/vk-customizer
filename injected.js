@@ -200,40 +200,36 @@
             insertAfter(customTrigger, topVkMenu);
         },
         parseDom: function(obj){
-            console.log(obj);
-            if (obj.block){
-                console.log('obj.block');
-                var _block = obj.block;
-                function getNode(bool) {
-                    var node = doc.createElement(_block.tag);
-                    node.className += _block.className || '';
-                    if (_block.attr){
-                        for(var key in _block.attr){
-                            node.setAttribute(key, _block.attr[key]);
+            var _block = obj;
+            function getNode(bool) {
+                var node = doc.createElement(_block.tag),
+                    _clones = [];
+                node.className += _block.className || '';
+                if (_block.attr){
+                    for(var key in _block.attr){
+                        node.setAttribute(key, _block.attr[key]);
+                    }
+                }
+                node.textContent = _block.text || null;
+                if(bool){
+                    _block.repeat.map(function(el, i){
+                        var __clone = node.cloneNode();
+                        if(i == 0){
+                            __clone.setAttribute("disabled", "disabled");
+                            __clone.setAttribute("selected", "true");
                         }
-                    }
-                    node.textContent = _block.text || null;
-                    if(bool){
-                        var _clones = [];
-                        _block.repeat.map(function(el,i){
-                            var __clone = node.cloneNode();
-                            if(i == 0){
-                                __clone.setAttribute("disabled", "disabled");
-                                __clone.setAttribute("selected", "true");
-                            }
-                            __clone.textContent = el[i] || null;
-                            _clones.push(__clone);
-                        });
-                        return _clones;
-                    }else{
-                        return node;
-                    }
+                        __clone.textContent = el || null;
+                        _clones.push(__clone);
+                    });
+                    return _clones;
+                }else{
+                    return node;
                 }
-                if (_block.repeat){
-                    getNode(true);
-                } else {
-                    getNode();
-                }
+            }
+            if (_block.repeat){
+                return getNode(true);
+            } else {
+                return getNode();
             }
         },
         initVirtualDom: function(tree){
@@ -243,17 +239,24 @@
                 if (node.content){
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
-                        var _block = controller.parseDom(node.block);
-                            //_content = controller.parseDom(node.content[i].block);
-                        console.log(_block);
-                        //console.log(_block, _content);
-                        //appending(_block, _content);
+                        var _block = controller.parseDom(node.block),
+                            _content = controller.parseDom(node.content[i].block);
+                        //console.log(node.block,_block,node.content[i].block, _content);
+                        if(Array.isArray(_content)){
+                            _content.forEach(function(el){
+                                appending(_block, el);
+                            })
+                        }else{
+                            appending(_block, _content);
+                        }
+                        console.log(_block, _content);//
                         //console.log(i,_block, node.content[i], queue[i].block);
                         //console.log(i,node.block, node.content[i], queue[i].block);
                     }
                 }
             }
-            appending(body, tree.root.block);
+            console.log(tree.root.block);
+            //appending(body, tree.root.block);
         },
         chooseFeatures: function(){
             model.features().forEach(function(el){
@@ -331,12 +334,12 @@
                 });
             };
 
-            function showKeyCode(){
+            /*function showKeyCode(){
                 var code = prompt().charCodeAt(0);
                 alert(code-32);
             }
             showKeyCode();
-            new KeyCombination('w');
+            new KeyCombination('w');*/
         }
     };
 
