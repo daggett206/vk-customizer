@@ -242,6 +242,7 @@
                         var _block = controller.parseDom(node.block),
                             _content = controller.parseDom(node.content[i].block);
                         //console.log(node.block,_block,node.content[i].block, _content);
+                        console.log(_block, _content);
                         if(Array.isArray(_content)){
                             _content.forEach(function(el){
                                 appending(_block, el);
@@ -249,7 +250,6 @@
                         }else{
                             appending(_block, _content);
                         }
-                        console.log(_block, _content);//
                         //console.log(i,_block, node.content[i], queue[i].block);
                         //console.log(i,node.block, node.content[i], queue[i].block);
                     }
