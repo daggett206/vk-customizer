@@ -239,7 +239,7 @@
                 if (node.content){
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
-                        var _block = controller.parseDom(node.block),
+                        var _block = controller.parseDom(node.block), //todo here is the problem
                             _content = controller.parseDom(node.content[i].block);
                         //console.log(node.block,_block,node.content[i].block, _content);
                         console.log(_block, _content);
