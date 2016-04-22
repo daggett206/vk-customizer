@@ -180,7 +180,7 @@
                                         tag: 'label',
                                         className: 'customLabel customAdsLabel',
                                         attr: {
-                                            for : 'customColorCheckBox'
+                                            for : 'customAdsCheckBox'
                                         }
                                     }
                                 }
@@ -235,19 +235,19 @@
         initVirtualDom: function(tree){
             var queue = [tree.root];
             while(queue.length) {
-                var node = queue.shift();
+                var node = queue.shift(),
+                    _block = controller.parseDom(node.block);
                 if (node.content){
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
-                        var _block = controller.parseDom(node.block), //todo here is the problem
-                            _content = controller.parseDom(node.content[i].block);
+                        var _content = controller.parseDom(node.content[i].block);
                         //console.log(node.block,_block,node.content[i].block, _content);
-                        console.log(_block, _content);
                         if(Array.isArray(_content)){
                             _content.forEach(function(el){
                                 appending(_block, el);
                             })
                         }else{
+                            console.log(_block, _content);
                             appending(_block, _content);
                         }
                         //console.log(i,_block, node.content[i], queue[i].block);
