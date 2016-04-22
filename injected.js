@@ -179,6 +179,7 @@
                                     block: {
                                         tag: 'label',
                                         className: 'customLabel customAdsLabel',
+                                        text: 'Выключить рекламу',
                                         attr: {
                                             for : 'customAdsCheckBox'
                                         }
@@ -240,14 +241,14 @@
                 if (node.content){
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
-                        var _content = controller.parseDom(node.content[i].block);
+                        var _content = controller.parseDom(node.content[i].block); //todo here is problem, when parsed second time
                         //console.log(node.block,_block,node.content[i].block, _content);
                         if(Array.isArray(_content)){
                             _content.forEach(function(el){
                                 appending(_block, el);
                             })
                         }else{
-                            console.log(_block, _content);
+                            console.log(_block, _content, queue);
                             appending(_block, _content);
                         }
                         //console.log(i,_block, node.content[i], queue[i].block);
