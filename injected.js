@@ -238,19 +238,11 @@
             var queue = [tree.root];
             while(queue.length) {
                 var node = queue.shift(),
-                    cachedElements = [],
-                    _block;
-                if (node.block.created === false || node.block.created === undefined){
                     _block = controller.parseDom(node.block);
-                } else {
-                    _block = cachedElements.shift();
-                }
                 if (node.content){
                     for(var i = 0; i < node.content.length; i++) {
                         queue.push(node.content[i]);
                         var _content = controller.parseDom(node.content[i].block);
-                        cachedElements.push(_content);
-                        console.log(cachedElements);
                         if(Array.isArray(_content)){
                             _content.forEach(function(el){
                                 appending(_block, el);
