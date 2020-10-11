@@ -1,5 +1,4 @@
 (function(){
-
     var customBox = addElement("div", "customBox"),
         customTrigger = addElement("div", "customTrigger"),
         customColorInput = addElement("input", "customColorInput", function(el){
@@ -37,7 +36,7 @@
     var model = {
         user_data: {
             bgColor: function(){
-                return localStorage.getItem('bgColor')
+                return localStorage.getItem('bgColor');
             },
             colorScheme: function(){
                 return localStorage.getItem('colorScheme');
